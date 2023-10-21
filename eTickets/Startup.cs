@@ -1,4 +1,5 @@
 using eTickets.Data;
+using eTickets.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,8 +29,11 @@ namespace eTickets
             //add DbContext configuration
             //services.AddDbContext<AppDbContext>();
 
-            //add DbContext configuration with data storage and define conectionstring - in my case it's SQL server
+            //add DbContext configuration with data storage and define conectionstring - in my case it's SQL server.
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
+
+            //Service configuration - register our services to be able to inject our service to interact with our DbContext.
+            services.AddScoped<IActorsService, ActorsService>(); //Scopped lifetime services are created once per request
 
             services.AddControllersWithViews();
         }
