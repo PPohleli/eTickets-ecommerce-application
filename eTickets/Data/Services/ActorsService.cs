@@ -19,9 +19,11 @@ namespace eTickets.Data.Services
             var results = await _context.Actors.ToListAsync();
             return results;
         }
+
         public void Add(Actor actor)
         {
-            throw new System.NotImplementedException();
+            _context.Actors.Add(actor);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
