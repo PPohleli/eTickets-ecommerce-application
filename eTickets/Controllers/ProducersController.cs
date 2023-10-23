@@ -46,5 +46,28 @@ namespace eTickets.Controllers
             await _service.AddAsync(producer);
             return RedirectToAction(nameof(Index));
         }
+
+        //Get: Producers/Edit/ {id} - this display a view with specific producer details to edit 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var producerDetails = await _service.GetByIdAsync(id);
+            if (producerDetails == null)
+                return View("NotFound");
+            return View(producerDetails);
+        }
+
+        //Post (Add): this display only an empty view used to add a producer
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, [Bind("Id, ProfilePictureURL, FullName, Bio")] Producer producer)
+        {
+            if (!ModelState.IsValid)
+                return View(producer);
+            if (id == producer.Id)
+            {
+                await _service.UpdateAsync(id, producer);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(producer);
+        }
     }
 }
