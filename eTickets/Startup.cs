@@ -34,6 +34,7 @@ namespace eTickets
 
             //Service configuration - register our services to be able to inject our service to interact with our DbContext.
             services.AddScoped<IActorsService, ActorsService>(); //Scopped lifetime services are created once per request
+            services.AddScoped<IProducersService, ProducersService>();
 
             services.AddControllersWithViews();
         }
