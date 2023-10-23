@@ -56,7 +56,7 @@ namespace eTickets.Controllers
             return View(producerDetails);
         }
 
-        //Post (Add): this display only an empty view used to add a producer
+        //Post (Edit): update a producer in the database
         [HttpPost]
         public async Task<IActionResult> Edit(int id, [Bind("Id, ProfilePictureURL, FullName, Bio")] Producer producer)
         {
@@ -68,6 +68,30 @@ namespace eTickets.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(producer);
+        }
+
+        //Get: Producers/Delete/{id} - this display only a view with producer details
+        public async Task<IActionResult> Delete(int id)
+        {
+            var producerDetails = await _service.GetByIdAsync(id);
+
+            if (producerDetails == null)
+                return View("NotFound");
+
+            return View(producerDetails);
+        }
+
+        //Post (Delete): Delete producer in the database
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var producerDetails = await _service.GetByIdAsync(id);
+
+            if (producerDetails == null)
+                return View("NotFound");
+
+            await _service.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
