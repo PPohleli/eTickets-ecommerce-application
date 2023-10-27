@@ -33,8 +33,10 @@ namespace eTickets
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
             //Service configuration - register our services to be able to inject our service to interact with our DbContext.
-            services.AddScoped<IActorsService, ActorsService>(); //Scopped lifetime services are created once per request
+            //Scopped lifetime services are created once per request
+            services.AddScoped<IActorsService, ActorsService>(); 
             services.AddScoped<IProducersService, ProducersService>();
+            services.AddScoped<ICinemasService, CinemasService>();
 
             services.AddControllersWithViews();
         }
