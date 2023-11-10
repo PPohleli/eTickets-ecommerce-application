@@ -9,6 +9,8 @@ namespace eTickets.Models
 {
     public class NewMovieVM
     {
+        public int Id { get; set; }
+
         [Display(Name = "Movie poster URL")]
         [Required(ErrorMessage = "Movie poster is required")]
         public string ImageURL { get; set; }
