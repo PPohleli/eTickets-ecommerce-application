@@ -2,6 +2,7 @@
 using eTickets.Data.Services;
 using eTickets.Data.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
@@ -26,6 +27,15 @@ namespace eTickets.Controllers
                 ShoppingCartTotal = _shoppingCart.GetShoppingCartTotal()
             };
             return View(response);
+        }
+
+        public async Task<RedirectToActionResult> AddItemToShoppingCart(int id)
+        {
+            var movieItem = await _moviesService.GetMovieByIdAsync(id);
+
+            if (movieItem != null)  _shoppingCart.AddItemToCart(movieItem);
+
+            return RedirectToAction(nameof(ShoppingCart));
         }
     }
 }
