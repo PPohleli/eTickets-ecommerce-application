@@ -14,7 +14,7 @@ namespace eTickets.Controllers
             _moviesService = moviesService;
             _shoppingCart = shoppingCart;
         }
-        public IActionResult Index()
+        public IActionResult ShoppingCart()
         {
             var item = _shoppingCart.GetShoppingCartItems();
 
