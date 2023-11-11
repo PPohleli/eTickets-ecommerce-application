@@ -13,7 +13,8 @@ namespace eTickets.Data.Services
         {
             _context = context; 
         }
-        public async Task<List<Order>> GetOrderByUserIdAsync(string userId)
+
+        public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
         {
             var orders = await _context.Orders.Include(n => n.OrderItems).ThenInclude(n => n.Movie).Where(n => n.UserId == userId).ToListAsync();
             return orders;
@@ -35,7 +36,7 @@ namespace eTickets.Data.Services
                 {
                     Amount = item.Amount,
                     MovieId = item.Movie.Id,
-                    OrderId = item.Id,
+                    OrderId = order.Id,
                     Price = item.Movie.Price
                 };
                 await _context.OrderItems.AddAsync(orderItem);
