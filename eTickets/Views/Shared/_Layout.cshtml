@@ -43,6 +43,10 @@
                         </button>
                     </form>
 
+                    <ul class="navbar-nav">
+                        @await Component.InvokeAsync("ShoppingCartSummery")
+                    </ul>
+
                 </div>
             </div>
         </nav>
