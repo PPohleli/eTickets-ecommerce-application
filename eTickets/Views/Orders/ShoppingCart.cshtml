@@ -52,11 +52,44 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="text-center">
+        <div class="text-right">
             <div class="btn-group">
-                <a class="btn btn-outline-primary" asp-controller="Orders" asp-action="CompleteOrder"> Complete order</a>
+                @*<a class="btn btn-outline-primary" asp-controller="Orders" asp-action="CompleteOrder"> Complete order</a>*@
+                <div id="paypal-btn"></div>
+                <span style="padding:6px"></span>
                 <a class="btn btn-outline-success" asp-controller="Movies" asp-action="Index"> Add more items</a>
             </div>
         </div>
     </div>
 </div>
+@section Scripts{
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script>
+        paypal.Button.render({
+            //Configure environment
+            env: 'sandbox',
+            client: {
+                sandbox: 'AbRZxTd7jpM2jRbjaArtmIKtde59qaDqH3oLuDLLqvc87ESZX45TCj6ulY182d3UPVKbE1BL9IF6ONmL'
+            },
+            //Customise button
+            locale: 'en_ZA',
+            style: {
+                size: 'small',
+                color: 'gold',
+                shape: 'pill'
+            },
+            commit: true,
+
+            // Setup a payment
+            payment: function(data, actions){
+                console.log("payment set up");
+            },
+
+            //Execute the payment
+            onAuthorize: function (data, actions) {
+                console.log("payment executed");
+            }
+
+        }, '#paypal-btn');
+    </script>
+}
