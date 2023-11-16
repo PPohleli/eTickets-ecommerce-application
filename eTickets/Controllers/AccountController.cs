@@ -3,6 +3,7 @@ using eTickets.Data.ViewModels;
 using eTickets.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
@@ -19,5 +20,31 @@ namespace eTickets.Controllers
             _context = context;
         }
         public IActionResult Login() => View(new LoginVM());
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginVM loginVM)
+        {
+            if (!ModelState.IsValid) return View(loginVM);
+
+            var user = await _userManager.FindByEmailAsync(loginVM.EmailAddress);
+
+            if (user != null)
+            {
+                var passwordcheck = await _userManager.CheckPasswordAsync(user, loginVM.Password);
+                if (passwordcheck)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Movies");
+                    }
+                }
+                TempData["Error"] = "Incorrect credentials. Please, try again";
+                return View(loginVM);
+            }
+
+            TempData["Error"] = "Incorrect credentials. Please, try again";
+            return View(loginVM);
+        }
     }
 }
